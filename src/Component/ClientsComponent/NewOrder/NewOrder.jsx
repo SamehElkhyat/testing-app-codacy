@@ -155,11 +155,11 @@ const NewOrderForm = () => {
       );
       toast.success(response.data.message);
       setIsLoading(false);
-      if (DecodedTokken === "Admin") {
-        navigate("/availableOrders");
-      } else {
-        navigate("/Orders");
-      }
+        if (DecodedTokken === "Admin") {
+          navigate("/availableOrders");
+        } else {
+          navigate("/Orders");
+        }
     } catch (error) {
       setIsLoading(false);
     }
@@ -242,17 +242,13 @@ const NewOrderForm = () => {
           reverseOrder={false}
         />
         <Form id="New-Order-form" onSubmit={formik.handleSubmit}>
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#002E5D] p-2 sm:p-3 md:p-4">
-            طلب جديد
-          </h3>
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#002E5D] p-2 sm:p-3 md:p-4">طلب جديد</h3>
           {/* موقع الطلب */}
 
           <div className="all-col w-full flex flex-col lg:flex-row text-[#002E5B] gap-3 sm:gap-4">
             <div className="w-full lg:w-1/2 first-col flex flex-col">
               <Form.Group className="p-2 sm:p-3 text-end" controlId="location">
-                <Form.Label className="text-sm sm:text-base">
-                  موقع الطلب
-                </Form.Label>
+                <Form.Label className="text-sm sm:text-base">موقع الطلب</Form.Label>
                 <Form.Control
                   className="text-end text-[#002E5D] text-sm sm:text-base"
                   as="select"
@@ -309,9 +305,7 @@ const NewOrderForm = () => {
                   <option value="نيوم">نيوم</option>
                 </Form.Control>
                 {formik.touched.location && formik.errors.location && (
-                  <div className="error-message text-sm">
-                    {formik.errors.location}
-                  </div>
+                  <div className="error-message text-sm">{formik.errors.location}</div>
                 )}
               </Form.Group>
               <Form.Group
@@ -339,11 +333,7 @@ const NewOrderForm = () => {
               </Form.Group>
             </div>
             <div className="seconde-col w-full lg:w-1/2 flex flex-col">
-              <Form.Group
-                dir="rtl"
-                className="p-2 sm:p-3 text-end"
-                controlId="Notes"
-              >
+              <Form.Group dir="rtl" className="p-2 sm:p-3 text-end" controlId="Notes">
                 <Form.Label className="text-[#002E5D] text-sm sm:text-base">
                   ملاحظات الطلب
                 </Form.Label>
@@ -356,18 +346,14 @@ const NewOrderForm = () => {
                   onChange={formik.handleChange}
                 />
                 {formik.touched.Notes && formik.errors.Notes && (
-                  <div className="error-message text-sm">
-                    {formik.errors.Notes}
-                  </div>
+                  <div className="error-message text-sm">{formik.errors.Notes}</div>
                 )}
               </Form.Group>
 
               {/* الموقع بالتفصيل */}
 
               <Form.Group className="p-2 sm:p-3 text-end">
-                <Form.Label className="text-sm sm:text-base">
-                  نوع النقل
-                </Form.Label>
+                <Form.Label className="text-sm sm:text-base">نوع النقل</Form.Label>
                 <Form.Control
                   className="text-end text-sm sm:text-base"
                   onClick={(e) => handelShowInputs(e)}
@@ -386,13 +372,8 @@ const NewOrderForm = () => {
           ) : (
             <>
               <div className="d-flex flex-col sm:flex-row justify-content-center m-3 sm:m-5 gap-3">
-                <Form.Group
-                  className="Inputs-New-Order flex-1"
-                  controlId="City"
-                >
-                  <Form.Label className="text-sm sm:text-base">
-                    المدينه
-                  </Form.Label>
+                <Form.Group className="Inputs-New-Order flex-1" controlId="City">
+                  <Form.Label className="text-sm sm:text-base">المدينه</Form.Label>
                   <Form.Control
                     type="text"
                     value={formik.values.City}
@@ -400,16 +381,11 @@ const NewOrderForm = () => {
                     className="text-sm sm:text-base"
                   />
                   {formik.touched.City && formik.errors.City && (
-                    <div className="error-message text-sm">
-                      {formik.errors.City}
-                    </div>
+                    <div className="error-message text-sm">{formik.errors.City}</div>
                   )}
                 </Form.Group>
 
-                <Form.Group
-                  className="Inputs-New-Order flex-1"
-                  controlId="Town"
-                >
+                <Form.Group className="Inputs-New-Order flex-1" controlId="Town">
                   <Form.Label className="text-sm sm:text-base">الحي</Form.Label>
                   <Form.Control
                     type="text"
@@ -418,19 +394,12 @@ const NewOrderForm = () => {
                     className="text-sm sm:text-base"
                   />
                   {formik.touched.Town && formik.errors.Town && (
-                    <div className="error-message text-sm">
-                      {formik.errors.Town}
-                    </div>
+                    <div className="error-message text-sm">{formik.errors.Town}</div>
                   )}
                 </Form.Group>
 
-                <Form.Group
-                  className="Inputs-New-Order flex-1"
-                  controlId="zipCode"
-                >
-                  <Form.Label className="text-sm sm:text-base">
-                    الرمز البريدي
-                  </Form.Label>
+                <Form.Group className="Inputs-New-Order flex-1" controlId="zipCode">
+                  <Form.Label className="text-sm sm:text-base">الرمز البريدي</Form.Label>
                   <Form.Control
                     type="text"
                     value={formik.values.zipCode}
@@ -438,9 +407,7 @@ const NewOrderForm = () => {
                     className="text-sm sm:text-base"
                   />
                   {formik.touched.zipCode && formik.errors.zipCode && (
-                    <div className="error-message text-sm">
-                      {formik.errors.zipCode}
-                    </div>
+                    <div className="error-message text-sm">{formik.errors.zipCode}</div>
                   )}
                 </Form.Group>
               </div>
@@ -455,34 +422,29 @@ const NewOrderForm = () => {
           {formik.values.numberOfTypeOrders.map((order, index) => (
             <div key={index} className="border rounded-[30px] p-3 mb-3">
               <Form.Group controlId={`numberOfTypeOrders[${index}][typeOrder]`}>
-                <Form.Label className="text-sm sm:text-base">
-                  نوع الطلب
-                </Form.Label>
+                <Form.Label className="text-sm sm:text-base">نوع الطلب</Form.Label>
                 <Form.Control
                   as="select"
                   value={order.typeOrder}
                   onChange={(e) => {
                     const updatedOrders = [...formik.values.numberOfTypeOrders];
+                    // updatedOrders[index].typeOrder = e.target.value;
 
-                    // التحقق من أن index ضمن الحدود المسموحة
-                    if (typeof index !== "number" || index < 0 || index >= updatedOrders.length) return;
-                    
-                    const selectedType = e.target.value;
-                    
-                    // التحقق من أن نوع الطلب ضمن الأنواع المسموحة
-                    const allowedTypes = ["حاويه", "طبليه"]; // حسب حالتك
-                    if (!allowedTypes.includes(selectedType)) return;
-                    
-                    // تحديث النوع
-                    updatedOrders[index].typeOrder = selectedType;
-                    
-                    // حذف الوزن لو النوع "حاويه"
-                    if (selectedType === "حاويه") {
-                      updatedOrders[index].Weight = "";
+                    updatedOrders.map((order, index) => {
+                      if (index === 0) {
+                        order.typeOrder = e.target.value;
+                      }
+                    });
+                    // إزالة قيمة الوزن إذا كان نوع الطلب "حاوية"
+                    if (e.target.value === "حاويه") {
+                      updatedOrders.map((order, index) => {
+                        if (index === 0) {
+                          order.Weight = "";
+                        }
+                      });
                     }
-                    
+
                     formik.setFieldValue("numberOfTypeOrders", updatedOrders);
-                    
                   }}
                   className="text-sm sm:text-base"
                 >
@@ -522,9 +484,7 @@ const NewOrderForm = () => {
               {/* حقل الوزن يظهر فقط إذا لم يكن نوع الطلب "حاوية" */}
               {order.typeOrder !== "حاويه" && (
                 <Form.Group controlId={`numberOfTypeOrders[${index}][Weight]`}>
-                  <Form.Label className="text-sm sm:text-base">
-                    الوزن
-                  </Form.Label>
+                  <Form.Label className="text-sm sm:text-base">الوزن</Form.Label>
                   <Form.Control
                     type="number"
                     value={order.Weight}
@@ -548,9 +508,7 @@ const NewOrderForm = () => {
 
               {order.typeOrder === "حاويه" && (
                 <Form.Group controlId={`numberOfTypeOrders[${index}][Size]`}>
-                  <Form.Label className="text-sm sm:text-base">
-                    الحجم
-                  </Form.Label>
+                  <Form.Label className="text-sm sm:text-base">الحجم</Form.Label>
 
                   <Form.Control
                     as="select"
@@ -591,10 +549,7 @@ const NewOrderForm = () => {
           >
             إضافة طلب جديد
           </button>
-          <h5 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#002E5D] p-3 sm:p-4">
-            {" "}
-            الملفات
-          </h5>
+          <h5 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#002E5D] p-3 sm:p-4"> الملفات</h5>
           <Form.Group controlId="orderFiles" className="mt-4">
             <Form.Label className="fw-semibold text-[#002E5D] text-sm sm:text-base">
               سجل التجاري
@@ -728,10 +683,7 @@ const NewOrderForm = () => {
           {IsLoading ? (
             <>
               {" "}
-              <Button
-                variant="primary"
-                className="d-flex justify-content-end w-full sm:w-auto"
-              >
+              <Button variant="primary" className="d-flex justify-content-end w-full sm:w-auto">
                 <Spinner
                   as="span"
                   animation="border"
@@ -740,9 +692,7 @@ const NewOrderForm = () => {
                   aria-hidden="true"
                   className="me-2 text-danger d-flex justify-content-end mt-1"
                 />
-                <span className="text-sm sm:text-base">
-                  جارٍ تنفيذ الطلب...
-                </span>
+                <span className="text-sm sm:text-base">جارٍ تنفيذ الطلب...</span>
               </Button>
             </>
           ) : (
