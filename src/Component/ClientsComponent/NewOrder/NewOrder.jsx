@@ -427,6 +427,12 @@ const NewOrderForm = () => {
                   as="select"
                   value={order.typeOrder}
                   onChange={(e) => {
+                    const allowedTypes = ["طبليه", "حاويه"];
+                    if (!allowedTypes.includes(e.target.value)) {
+                      toast.error("نوع الطلب غير مدعوم");
+                      return;
+                    }
+                  
                     const updatedOrders = [...formik.values.numberOfTypeOrders];
                     updatedOrders[index].typeOrder = e.target.value;
 
