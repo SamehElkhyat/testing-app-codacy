@@ -463,17 +463,26 @@ const NewOrderForm = () => {
                   value={order.typeOrder}
                   onChange={(e) => {
                     const updatedOrders = [...formik.values.numberOfTypeOrders];
-                    if (updatedOrders[index] < 0) {
-                      updatedOrders[index].typeOrder = e.target.value;
 
-                    }
-
-                    // إزالة قيمة الوزن إذا كان نوع الطلب "حاوية"
-                    if (e.target.value === "حاويه") {
+                    // التحقق من أن index ضمن الحدود المسموحة
+                    if (typeof index !== "number" || index < 0 || index >= updatedOrders.length) return;
+                    
+                    const selectedType = e.target.value;
+                    
+                    // التحقق من أن نوع الطلب ضمن الأنواع المسموحة
+                    const allowedTypes = ["حاويه", "طبليه"]; // حسب حالتك
+                    if (!allowedTypes.includes(selectedType)) return;
+                    
+                    // تحديث النوع
+                    updatedOrders[index].typeOrder = selectedType;
+                    
+                    // حذف الوزن لو النوع "حاويه"
+                    if (selectedType === "حاويه") {
                       updatedOrders[index].Weight = "";
                     }
-
+                    
                     formik.setFieldValue("numberOfTypeOrders", updatedOrders);
+                    
                   }}
                   className="text-sm sm:text-base"
                 >
