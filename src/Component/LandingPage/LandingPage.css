@@ -1,0 +1,69 @@
+.landing-header {
+  background-color: #e9fafe;
+  display: flex;
+  justify-content: end;
+}
+.landing-page-ul {
+  margin-left: 30px;
+  text-decoration: none;
+  list-style: none;
+  color: #13b19b;
+}
+.landing-page-ul button {
+  text-decoration: none;
+  list-style: none;
+  background-color: #006666;
+}
+.landing-page-right-section {
+  z-index: 1;
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.landing-page-left-section {
+  scale: 0.9;
+  width: 50%;
+  height: 80vh;
+  background-color: #10101047;
+  margin-top: 70px;
+}
+.landing-page-right-section img {
+  width: 100%; /* بدل 100% */
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover !important;
+  scale: 1;
+  display: block;
+  margin: 0 auto; /* تخليها في النص */
+}
+
+.landing-header {
+  width: 100%;
+  height: 100vh;
+}
+
+/* Tablet */
+@media (max-width: 769px) {
+  .landing-page-left-section {
+    scale: 1;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 400px) {
+    
+  .landing-page-left-section {
+    transform: scale(0.8);
+    width: 70%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+  }
+  .Button-Landing-Page {
+    padding: 0;
+    scale: 0.8;
+  }
+}

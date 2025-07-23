@@ -1,0 +1,164 @@
+/*/*/
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 30% !important;
+  display: flex;
+  justify-content: end;
+  color: #333;
+  text-decoration: none;
+}
+
+/*/*/
+.Items-NavBar {
+  margin-left: 50px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.3rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  z-index: 1000;
+  flex-direction: row-reverse;
+}
+
+.Drawer-link {
+  text-decoration: none;
+  color: #020346;
+  font-weight: 400;
+  transition: all 0.2s ease-in-out;
+}
+
+.Drawer-link:hover {
+  color: #000000;
+  transition: all 0.2s ease-in-out;
+  transform: scale(1.05);
+}
+
+#icon {
+  padding: 0 !important;
+  background-color: none !important;
+  color: #020346 !important;
+  font-weight: 900 !important;
+  text-decoration: none !important;
+}
+
+.navbar-container {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+
+.navbar-logo img {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  object-fit: cover;
+  margin-left: 10px;
+}
+
+.Drawer-Logo {
+  height: 20vh;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  align-items: center;
+  background-color: #f0f0f0;
+  object-fit: cover;
+  margin-left: 10px;
+}
+
+.nav-link {
+  width: 100%;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+.nav-menu {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  text-indent: 50px;
+  list-style-type: none;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-link:hover::after {
+  width: 65%;
+}
+
+#DrawerList {
+  width: 100%;
+  height: 100%;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+    flex-direction: row-reverse;
+
+  }
+
+  .nav-menu {
+    text-indent: 13px;
+    font-size: 13px;
+    font-weight: 900;
+    text-indent: 13px;
+  }
+
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-menu .nav-link {
+    padding: 0.5rem 0;
+  }
+
+  .hamburger {
+    display: block;
+    cursor: pointer;
+  }
+}
+
+.DrawerList {
+  --DrawerList: 999999999999 !important;
+}
