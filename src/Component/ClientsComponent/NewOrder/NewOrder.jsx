@@ -464,35 +464,24 @@ const NewOrderForm = () => {
                   onChange={(e) => {
                     const updatedOrders = [...formik.values.numberOfTypeOrders];
 
-                    if (
-                      typeof index !== "number" ||
-                      index < 0 ||
-                      index >= updatedOrders.length ||
-                      typeof updatedOrders[index] !== "object"
-                    ) {
-                      return;
-                    }
+                    // التحقق من أن index ضمن الحدود المسموحة
+                    if (typeof index !== "number" || index < 0 || index >= updatedOrders.length) return;
                     
                     const selectedType = e.target.value;
                     
-                    // تحقق إن القيمة مسموح بيها
-                    const allowedTypes = ["حاويه", "طبليه"]; // حسب التطبيق
+                    // التحقق من أن نوع الطلب ضمن الأنواع المسموحة
+                    const allowedTypes = ["حاويه", "طبليه"]; // حسب حالتك
                     if (!allowedTypes.includes(selectedType)) return;
                     
-                    // بدل من الوصول المباشر: destructure
-                    const currentOrder = { ...updatedOrders[index] };
-                    currentOrder.typeOrder = selectedType;
+                    // تحديث النوع
+                    updatedOrders[index].typeOrder = selectedType;
                     
-                    // إزالة الوزن لو نوع الطلب "حاويه"
+                    // حذف الوزن لو النوع "حاويه"
                     if (selectedType === "حاويه") {
-                      currentOrder.Weight = "";
+                      updatedOrders[index].Weight = "";
                     }
                     
-                    // إعادة دمج العنصر بعد التحديث
-                    updatedOrders[index] = currentOrder;
-                    
                     formik.setFieldValue("numberOfTypeOrders", updatedOrders);
-                    
                     
                   }}
                   className="text-sm sm:text-base"
