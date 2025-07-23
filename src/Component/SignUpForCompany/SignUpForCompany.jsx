@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Button, Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForCompany = () => {
   const [Isloading, setIsloading] = useState(false);

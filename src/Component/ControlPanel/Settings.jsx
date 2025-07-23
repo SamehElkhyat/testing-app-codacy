@@ -19,13 +19,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Settings() {
   const [open, setOpen] = useState(true);
   const [Secton1, setSection1] = useState("empty");
   const [anchorEl, setAnchorEl] = useState(null);
   const [DecodedTokken, setDecodedTokken] = useState({});
-
+  const navigate = useNavigate();
   const user = {
     avatar: "https://via.placeholder.com/150",
   };
@@ -35,7 +36,7 @@ function Settings() {
       const data = await axios.get(`${process.env.REACT_APP_API_URL}/Logout`, {
         withCredentials: true,
       });
-      window.location.href = "/SignIn";
+      navigate("/SignIn");
     } catch (error) {}
   };
   const GetProfileItems = async () => {
