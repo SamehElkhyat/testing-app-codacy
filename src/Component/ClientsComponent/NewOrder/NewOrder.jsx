@@ -6,13 +6,14 @@ import toast, { Toaster } from "react-hot-toast";
 import * as Yup from "yup";
 import { motion } from "framer-motion";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const NewOrderForm = () => {
   const [IsLoading, setIsLoading] = useState(false);
   const [fileInputs, setFileInputs] = useState([0]); // تبدأ بحقل واحد فقط
   const [ShowInputs, setShowInputs] = useState("null");
   const [DecodedTokken, setDecodedTokken] = useState();
-
+  const navigate = useNavigate();
   const handelShowInputs = (e) => {
     setShowInputs(e.target.value);
   };
@@ -154,13 +155,11 @@ const NewOrderForm = () => {
       );
       toast.success(response.data.message);
       setIsLoading(false);
-      setTimeout(() => {
         if (DecodedTokken === "Admin") {
-          window.location.href = "/availableOrders";
+          navigate("/availableOrders");
         } else {
-          window.location.href = "/Orders";
+          navigate("/Orders");
         }
-      }, 1000);
     } catch (error) {
       setIsLoading(false);
     }
