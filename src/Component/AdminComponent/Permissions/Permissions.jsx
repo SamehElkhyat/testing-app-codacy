@@ -53,7 +53,7 @@ export default function Permissions() {
   const Premissions = async (page = 1) => {
     try {
       const safePage =
-        Number.isInteger(page) && Number(page) > 0 ? Number(page) : 1;
+        Number.isInteger(page) && page > 0 ? page : 1;
 
       const params = new URLSearchParams({ page: safePage });
 
