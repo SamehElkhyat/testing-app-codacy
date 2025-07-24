@@ -52,7 +52,7 @@ export default function CanceledOrders() {
         `${process.env.REACT_APP_API_URL_MICROSERVICE2}/Change-Statu-CustomerService-Broker`,
         {
           ID: id,
-          Notes: notes[id] || "", // إرسال الملاحظات إن وجدت
+          Notes: notes.get(id) || "", // إرسال الملاحظات إن وجدت
           statuOrder: "transfer",
         },
         {
