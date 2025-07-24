@@ -6,6 +6,38 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { Import, Share2 } from "lucide-react"; // أيقونة مشاركة
 
+// Utility function to safely construct API URLs
+const createApiUrl = (endpoint, pathParams = {}) => {
+  try {
+    const baseUrl = process.env.REACT_APP_API_URL;
+    if (!baseUrl) {
+      throw new Error('API base URL not configured');
+    }
+    
+    // Validate and sanitize path parameters
+    const sanitizedPath = Object.entries(pathParams).reduce((path, [key, value]) => {
+      // Validate that the value is safe for URL paths
+      const sanitizedValue = encodeURIComponent(String(value).replace(/[^\w\-._~]/g, ''));
+      return path.replace(`{${key}}`, sanitizedValue);
+    }, endpoint);
+    
+    const url = new URL(sanitizedPath, baseUrl);
+    return url.toString();
+  } catch (error) {
+    console.error('Error constructing API URL:', error);
+    throw error;
+  }
+};
+
+// Utility function to validate page numbers
+const validatePageNumber = (page) => {
+  const numPage = Number(page);
+  if (!Number.isInteger(numPage) || numPage < 1 || numPage > 10000) {
+    return 1;
+  }
+  return numPage;
+};
+
 export default function Mangers() {
   const [selectedOrder, setSelectedOrder] = useState([]);
   const navigate = useNavigate();
@@ -52,12 +84,21 @@ export default function Mangers() {
   const CustomerService = async (page = 1, search = "") => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Get-Manager/${page}`,
-        {
-          withCredentials: true,
-        }
-      );
+      // Simple validation: ensure page is a positive integer between 1-10000
+      const pageNum = parseInt(page, 10);
+      const safePage = (pageNum && pageNum > 0 && pageNum <= 10000) ? pageNum : 1;
+      
+      // Validate base URL exists
+      if (!process.env.REACT_APP_API_URL) {
+        throw new Error('API URL not configured');
+      }
+      
+      // Construct URL safely with validated parameters
+      const apiUrl = `${process.env.REACT_APP_API_URL}/Get-Manager/${safePage}`;
+
+      const { data } = await axios.get(apiUrl, {
+        withCredentials: true,
+      });
 
       setSelectedOrder(data.data || data);
       setTotalPages(data.totalPages || 1);

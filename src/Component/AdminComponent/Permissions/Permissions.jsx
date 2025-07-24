@@ -50,16 +50,70 @@ export default function Permissions() {
     Premissions(OrderId);
   };
 
+  // Utility function to safely construct API URLs
+  const createApiUrl = (endpoint, pathParams = {}) => {
+    try {
+      const baseUrl = process.env.REACT_APP_API_URL;
+      if (!baseUrl) {
+        throw new Error('API base URL not configured');
+      }
+      
+      // Validate and sanitize path parameters
+      const sanitizedPath = Object.entries(pathParams).reduce((path, [key, value]) => {
+        // Validate that the value is safe for URL paths
+        const sanitizedValue = encodeURIComponent(String(value).replace(/[^\w\-._~]/g, ''));
+        return path.replace(`{${key}}`, sanitizedValue);
+      }, endpoint);
+      
+      const url = new URL(sanitizedPath, baseUrl);
+      return url.toString();
+    } catch (error) {
+      console.error('Error constructing API URL:', error);
+      throw error;
+    }
+  };
+
+  // Utility function to validate page numbers
+  const validatePageNumber = (page) => {
+    const numPage = Number(page);
+    if (!Number.isInteger(numPage) || numPage < 1 || numPage > 10000) {
+      return 1;
+    }
+    return numPage;
+  };
+
+  // Utility function to validate IDs
+  const validateId = (id) => {
+    // Allow only alphanumeric characters, hyphens, and underscores
+    const sanitizedId = String(id).replace(/[^\w\-]/g, '');
+    if (!sanitizedId || sanitizedId.length > 100) {
+      throw new Error('Invalid ID parameter');
+    }
+    return sanitizedId;
+  };
+
   const Premissions = async (id) => {
     try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Get-Permissions/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      // Simple validation: ensure id is alphanumeric and reasonable length
+      const cleanId = String(id).replace(/[^\w\-]/g, '').substring(0, 50);
+      if (!cleanId) {
+        throw new Error('Invalid ID parameter');
+      }
+      
+      // Validate base URL exists
+      if (!process.env.REACT_APP_API_URL) {
+        throw new Error('API URL not configured');
+      }
+      
+      const apiUrl = `${process.env.REACT_APP_API_URL}/Get-Permissions/${cleanId}`;
+
+      const { data } = await axios.get(apiUrl, {
+        withCredentials: true,
+      });
       setPremisionsarr(data);
-    } catch (error) {}
+    } catch (error) {
+      console.error('Error fetching permissions:', error);
+    }
   };
 
   const changePremetions = async () => {
@@ -124,12 +178,20 @@ export default function Permissions() {
   const CustomerService = async (page = 1, search = "") => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Get-All-Peaple-Admin/${page}`,
-        {
-          withCredentials: true,
-        }
-      );
+      // Simple validation: ensure page is a positive integer between 1-10000
+      const pageNum = parseInt(page, 10);
+      const safePage = (pageNum && pageNum > 0 && pageNum <= 10000) ? pageNum : 1;
+      
+      // Validate base URL exists
+      if (!process.env.REACT_APP_API_URL) {
+        throw new Error('API URL not configured');
+      }
+      
+      const apiUrl = `${process.env.REACT_APP_API_URL}/Get-All-Peaple-Admin/${safePage}`;
+
+      const { data } = await axios.get(apiUrl, {
+        withCredentials: true,
+      });
 
       setUsers(data.data || data);
       setTotalPages(data.totalPages || 1);

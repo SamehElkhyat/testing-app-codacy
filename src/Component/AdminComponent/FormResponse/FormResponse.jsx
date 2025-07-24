@@ -5,6 +5,50 @@ import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
 import { Import, Share2 } from "lucide-react"; // أيقونة مشاركة
 
+// Utility function to safely construct API URLs
+const createApiUrl = (endpoint, queryParams = {}) => {
+  try {
+    const baseUrl = process.env.REACT_APP_API_URL_MICROSERVICE4;
+    if (!baseUrl) {
+      throw new Error('API base URL not configured');
+    }
+    
+    const url = new URL(endpoint, baseUrl);
+    
+    // Add query parameters safely
+    Object.entries(queryParams).forEach(([key, value]) => {
+      if (value != null && value !== '') {
+        // Sanitize query parameters
+        const sanitizedValue = String(value).substring(0, 1000); // Limit length
+        url.searchParams.append(key, sanitizedValue);
+      }
+    });
+    
+    return url.toString();
+  } catch (error) {
+    console.error('Error constructing API URL:', error);
+    throw error;
+  }
+};
+
+// Utility function to validate page numbers
+const validatePageNumber = (page) => {
+  const numPage = Number(page);
+  if (!Number.isInteger(numPage) || numPage < 1 || numPage > 10000) {
+    return 1;
+  }
+  return numPage;
+};
+
+// Utility function to sanitize search input
+const sanitizeSearchInput = (search) => {
+  if (!search || typeof search !== 'string') {
+    return '';
+  }
+  // Remove potentially dangerous characters and limit length
+  return search.replace(/[<>\"'&]/g, '').substring(0, 255);
+};
+
 export default function FormResopnse() {
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,12 +60,29 @@ export default function FormResopnse() {
   const CustomerService = async (page = 1, search = "") => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL_MICROSERVICE4}/Get-Form?page=${page}&search=${search}`,
-        {
-          withCredentials: true,
-        }
-      );
+      // Simple validation for page number
+      const pageNum = parseInt(page, 10);
+      const safePage = (pageNum && pageNum > 0 && pageNum <= 10000) ? pageNum : 1;
+      
+      // Simple validation for search parameter
+      const safeSearch = typeof search === 'string' ? search.substring(0, 255) : '';
+      
+      // Validate base URL exists
+      if (!process.env.REACT_APP_API_URL_MICROSERVICE4) {
+        throw new Error('API URL not configured');
+      }
+      
+      // Use URLSearchParams for query parameters instead of direct interpolation
+      const baseUrl = `${process.env.REACT_APP_API_URL_MICROSERVICE4}/Get-Form`;
+      const url = new URL(baseUrl);
+      url.searchParams.append('page', safePage);
+      if (safeSearch) {
+        url.searchParams.append('search', safeSearch);
+      }
+
+      const { data } = await axios.get(url.toString(), {
+        withCredentials: true,
+      });
       console.log(data);
 
       setSelectedOrder(data.data || data);

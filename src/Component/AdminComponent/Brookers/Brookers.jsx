@@ -62,20 +62,27 @@ export default function Brookers() {
   const CustomerService = async (page = 1, search = "") => {
     setLoading(true);
     try {
-      const safePage = Number.isInteger(Number(page)) ? page : 1;
+      // Simple validation: ensure page is a positive integer between 1-10000
+      const pageNum = parseInt(page, 10);
+      const safePage = (pageNum && pageNum > 0 && pageNum <= 10000) ? pageNum : 1;
+      
+      // Validate base URL exists
+      if (!process.env.REACT_APP_API_URL) {
+        throw new Error('API URL not configured');
+      }
+      
+      // Construct URL safely using template literals with validated parameters
+      const apiUrl = `${process.env.REACT_APP_API_URL}/Get-Broker/${safePage}`;
 
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Get-Broker/${safePage}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const { data } = await axios.get(apiUrl, {
+        withCredentials: true,
+      });
       setSelectedOrder(data.data || data);
       setTotalPages(data.totalPages || 1);
       setTotalUsers(data.totalUser || data.length);
       setCurrentPage(page);
     } catch (error) {
-      
+      console.error('Error fetching broker data:', error);
     } finally {
       setLoading(false);
     }
