@@ -64,10 +64,8 @@ export default function Permissions() {
       const { data } = await axios.get(url, {
         withCredentials: true,
       });
-      setUsers(data.data || data);
-      setTotalPages(data.totalPages || 1);
-      setTotalUsers(data.totalUser || data.length);
-      setCurrentPage(page);
+
+      setSelectedOrder(data.data || data);
       setPremisionsarr(data);
     } catch (error) {}
   };

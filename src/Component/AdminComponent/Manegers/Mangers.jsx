@@ -6,38 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { Import, Share2 } from "lucide-react"; // أيقونة مشاركة
 
-// Utility function to safely construct API URLs
-const createApiUrl = (endpoint, pathParams = {}) => {
-  try {
-    const baseUrl = process.env.REACT_APP_API_URL;
-    if (!baseUrl) {
-      throw new Error('API base URL not configured');
-    }
-    
-    // Validate and sanitize path parameters
-    const sanitizedPath = Object.entries(pathParams).reduce((path, [key, value]) => {
-      // Validate that the value is safe for URL paths
-      const sanitizedValue = encodeURIComponent(String(value).replace(/[^\w\-._~]/g, ''));
-      return path.replace(`{${key}}`, sanitizedValue);
-    }, endpoint);
-    
-    const url = new URL(sanitizedPath, baseUrl);
-    return url.toString();
-  } catch (error) {
-    console.error('Error constructing API URL:', error);
-    throw error;
-  }
-};
-
-// Utility function to validate page numbers
-const validatePageNumber = (page) => {
-  const numPage = Number(page);
-  if (!Number.isInteger(numPage) || numPage < 1 || numPage > 10000) {
-    return 1;
-  }
-  return numPage;
-};
-
 export default function Mangers() {
   const [selectedOrder, setSelectedOrder] = useState([]);
   const navigate = useNavigate();
@@ -59,9 +27,7 @@ export default function Mangers() {
         }
       );
       CustomerService();
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const UnBlock = async (email) => {
@@ -76,27 +42,19 @@ export default function Mangers() {
         }
       );
       CustomerService();
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
-  const CustomerService = async (page = 1, search = "") => {
+  const CustomerService = async (page = 1) => {
     setLoading(true);
     try {
-      // Simple validation: ensure page is a positive integer between 1-10000
-      const pageNum = parseInt(page, 10);
-      const safePage = (pageNum && pageNum > 0 && pageNum <= 10000) ? pageNum : 1;
-      
-      // Validate base URL exists
-      if (!process.env.REACT_APP_API_URL) {
-        throw new Error('API URL not configured');
-      }
-      
-      // Construct URL safely with validated parameters
-      const apiUrl = `${process.env.REACT_APP_API_URL}/Get-Manager/${safePage}`;
-
-      const { data } = await axios.get(apiUrl, {
+      const safePage =
+        Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+      const params = new URLSearchParams({ page: safePage });
+      const url = `${
+        process.env.REACT_APP_API_URL
+      }/Get-Manager?${params.toString()}`;
+      const { data } = await axios.get(url, {
         withCredentials: true,
       });
 
@@ -105,7 +63,6 @@ export default function Mangers() {
       setTotalUsers(data.totalUser || data.length);
       setCurrentPage(page);
     } catch (error) {
-      
     } finally {
       setLoading(false);
     }
@@ -117,14 +74,14 @@ export default function Mangers() {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    CustomerService(page, searchTerm);
+    CustomerService(page);
   };
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
     setCurrentPage(1);
-    CustomerService(1, value);
+    CustomerService(1);
   };
 
   const renderPagination = () => {
@@ -163,7 +120,10 @@ export default function Mangers() {
       );
       if (startPage > 2) {
         pages.push(
-          <span key="ellipsis1" className="px-3 py-2 mx-1 text-sm font-medium text-gray-500">
+          <span
+            key="ellipsis1"
+            className="px-3 py-2 mx-1 text-sm font-medium text-gray-500"
+          >
             ...
           </span>
         );
@@ -191,7 +151,10 @@ export default function Mangers() {
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
         pages.push(
-          <span key="ellipsis2" className="px-3 py-2 mx-1 text-sm font-medium text-gray-500">
+          <span
+            key="ellipsis2"
+            className="px-3 py-2 mx-1 text-sm font-medium text-gray-500"
+          >
             ...
           </span>
         );
@@ -226,7 +189,6 @@ export default function Mangers() {
   return (
     <>
       <Box width="100%" textAlign="center" p={{ xs: 2, sm: 3, md: 4 }}>
-        
         <h1
           className="text-xl font-bold mb-4"
           style={{
@@ -256,13 +218,16 @@ export default function Mangers() {
         >
           المديرين
         </h1>
-        
+
         {/* Responsive container for buttons and search */}
         <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4 mb-6">
           {/* Buttons container */}
           <div className="w-full lg:w-auto flex flex-col sm:flex-row items-center justify-center gap-2">
             <button className="flex items-center justify-center gap-2 bg-[#00AEEF] text-white text-base sm:text-lg font-medium px-4 sm:px-6 py-2 sm:py-3 rounded-[15px] w-full sm:w-[141px] h-[45px] sm:h-[55px]">
-              <Share2 size={20} className="transform scale-x-[-1] sm:w-6 sm:h-6" />
+              <Share2
+                size={20}
+                className="transform scale-x-[-1] sm:w-6 sm:h-6"
+              />
               <span className="hidden sm:inline">مشاركة</span>
             </button>
             <button className="flex items-center justify-center gap-2 bg-[transparent] text-black border border-[var(--maincolor--)] text-base sm:text-lg font-medium px-4 sm:px-6 py-2 sm:py-3 rounded-[15px] w-full sm:w-[141px] h-[45px] sm:h-[55px]">
@@ -272,7 +237,10 @@ export default function Mangers() {
           </div>
 
           {/* Search container */}
-          <div className="w-full lg:w-auto flex items-center justify-center" dir="rtl">
+          <div
+            className="w-full lg:w-auto flex items-center justify-center"
+            dir="rtl"
+          >
             <div className="w-full max-w-2xl p-2 sm:p-4">
               <div className="border border-2 border-blue flex items-center justify-between rounded-2xl px-3 sm:px-4 py-2 bg-white shadow-sm focus-within:ring-2 focus-within:ring-blue-400">
                 <input
@@ -283,7 +251,9 @@ export default function Mangers() {
                   className="flex-1 text-right bg-transparent outline-none text-black placeholder:text-gray-400 text-sm sm:text-base"
                 />
                 <div className="flex items-center gap-1 sm:gap-2 text-black">
-                  <span className="text-sm sm:text-lg font-medium hidden sm:inline">بحث</span>
+                  <span className="text-sm sm:text-lg font-medium hidden sm:inline">
+                    بحث
+                  </span>
                   <svg
                     className="w-4 h-4 sm:w-5 sm:h-5"
                     fill="none"
@@ -302,75 +272,97 @@ export default function Mangers() {
             </div>
           </div>
         </div>
-        
+
         {/* Responsive table container */}
         <div className="table-responsive mt-3 overflow-x-auto">
           <div className="min-w-full">
             <table className="table table-bordered text-center shadow-sm w-full">
               <thead className="bg-white border">
                 <tr>
-                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">الاسم</th>
-                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">البريد الالكتروني</th>
-                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">رقم الهوية</th>
-                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">الهاتف</th>
-                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">الملف الشخصي</th>
-                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">حظر</th>
+                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                    الاسم
+                  </th>
+                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                    البريد الالكتروني
+                  </th>
+                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                    رقم الهوية
+                  </th>
+                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                    الهاتف
+                  </th>
+                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                    الملف الشخصي
+                  </th>
+                  <th className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                    حظر
+                  </th>
                 </tr>
               </thead>
-                              <tbody>
-                  {loading ? (
-                    <tr>
-                      <td colSpan="6" className="text-center py-4">
-                        <div className="flex justify-center items-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                          <span className="mr-2">جاري التحميل...</span>
-                        </div>
+              <tbody>
+                {loading ? (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4">
+                      <div className="flex justify-center items-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <span className="mr-2">جاري التحميل...</span>
+                      </div>
+                    </td>
+                  </tr>
+                ) : selectedOrder.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4 text-gray-500">
+                      لا توجد بيانات للعرض
+                    </td>
+                  </tr>
+                ) : (
+                  selectedOrder.map((customer, index) => (
+                    <tr key={index} className="bg-light">
+                      <td className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                        {customer.fullName}
                       </td>
-                    </tr>
-                  ) : selectedOrder.length === 0 ? (
-                    <tr>
-                      <td colSpan="6" className="text-center py-4 text-gray-500">
-                        لا توجد بيانات للعرض
+                      <td className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                        {customer.email}
                       </td>
-                    </tr>
-                  ) : (
-                    selectedOrder.map((customer, index) => (
-                      <tr key={index} className="bg-light">
-                        <td className="px-2 py-3 text-xs sm:text-sm md:text-base">{customer.fullName}</td>
-                        <td className="px-2 py-3 text-xs sm:text-sm md:text-base">{customer.email}</td>
-                        <td className="px-2 py-3 text-xs sm:text-sm md:text-base">{customer.identity}</td>
-                        <td className="px-2 py-3 text-xs sm:text-sm md:text-base">{customer.phoneNumber}</td>
-                        <td className="px-2 py-3">
-                          <Button
-                            onClick={() => navigate(`/ProfileUsers/${customer.id}`)}
-                            className="btn btn-primary text-white text-xs sm:text-sm md:text-base"
+                      <td className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                        {customer.identity}
+                      </td>
+                      <td className="px-2 py-3 text-xs sm:text-sm md:text-base">
+                        {customer.phoneNumber}
+                      </td>
+                      <td className="px-2 py-3">
+                        <Button
+                          onClick={() =>
+                            navigate(`/ProfileUsers/${customer.id}`)
+                          }
+                          className="btn btn-primary text-white text-xs sm:text-sm md:text-base"
+                        >
+                          عرض الملف الشخصي
+                        </Button>
+                      </td>
+                      <td className="px-2 py-3">
+                        {customer.isBlocked ? (
+                          <button
+                            id="Button-Block-groupe"
+                            onClick={() => UnBlock(customer.email)}
+                            className="btn btn-success text-black text-xs sm:text-sm md:text-base"
                           >
-                            عرض الملف الشخصي
-                          </Button>
-                        </td>
-                        <td className="px-2 py-3">
-                          {customer.isBlocked ? (
-                            <button
-                              id="Button-Block-groupe"
-                              onClick={() => UnBlock(customer.email)}
-                              className="btn btn-success text-black text-xs sm:text-sm md:text-base"
-                            >
-                              فك الحظر
-                            </button>
-                          ) : (
-                            <button
-                              id="Button-Block-groupe"
-                              onClick={() => Block(customer.email)}
-                              className="btn z-index-9999 btn-danger text-black text-xs sm:text-sm md:text-base"
-                            >
-                              حظر
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
+                            فك الحظر
+                          </button>
+                        ) : (
+                          <button
+                            id="Button-Block-groupe"
+                            onClick={() => Block(customer.email)}
+                            className="btn z-index-9999 btn-danger text-black text-xs sm:text-sm md:text-base"
+                          >
+                            حظر
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
             </table>
           </div>
         </div>
@@ -387,7 +379,8 @@ export default function Mangers() {
         {/* Page Info */}
         {totalUsers > 0 && (
           <div className="text-center text-sm text-gray-600 mb-4">
-            عرض {((currentPage - 1) * 12) + 1} إلى {Math.min(currentPage * 12, totalUsers)} من {totalUsers} نتيجة
+            عرض {(currentPage - 1) * 12 + 1} إلى{" "}
+            {Math.min(currentPage * 12, totalUsers)} من {totalUsers} نتيجة
           </div>
         )}
 
