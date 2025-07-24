@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function CanceledOrders() {
-  const [showNoteField, setShowNoteField] = useState({}); // حالة لإظهار حقل الإدخال عند الحاجة
-  const [showNoteField2, setShowNoteField2] = useState({}); // حالة لإظهار حقل الإدخال عند الحاجة
-  const [showNoteField3, setShowNoteField3] = useState({}); // حالة لإظهار حقل الإدخال عند الحاجة
+  const [showNoteField, setShowNoteField] = useState(new Map()); // حالة لإظهار حقل الإدخال عند الحاجة
+  const [showNoteField2, setShowNoteField2] = useState(new Map()); // حالة لإظهار حقل الإدخال عند الحاجة
+  const [showNoteField3, setShowNoteField3] = useState(new Map()); // حالة لإظهار حقل الإدخال عند الحاجة
   const [customers, setCustomers] = useState([]);
   const [sortOrder, setSortOrder] = useState("newest");
   const [notes, setNotes] = useState(new Map());
@@ -143,10 +143,18 @@ export default function CanceledOrders() {
       return newNotes;
     });  };
   const toggleNoteField = (id) => {
-    setShowNoteField((prev) => ({ ...prev, [id]: !prev[id] }));
+    setShowNoteField((prev) => {
+      const newShowNoteField = new Map(prev);
+      newShowNoteField.set(id, !newShowNoteField.get(id));
+      return newShowNoteField;
+    });
   };
   const toggleNoteField2 = (id) => {
-    setShowNoteField2((prev) => ({ ...prev, [id]: !prev[id] }));
+    setShowNoteField2((prev) => {
+      const newShowNoteField2 = new Map(prev);
+      newShowNoteField2.set(id, !newShowNoteField2.get(id));
+      return newShowNoteField2;
+    });
   };
 
   // Handle page change
