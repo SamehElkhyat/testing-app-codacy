@@ -52,18 +52,18 @@ export default function Permissions() {
 
   const Premissions = async (page = 1) => {
     try {
-      const safePage = Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
-      
-      const params = new URLSearchParams({ page: safePage});
+      const safePage =
+        Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
 
-      const url = `${process.env.REACT_APP_API_URL}/Get-Permissions?${params.toString()}`;
+      const params = new URLSearchParams({ page: safePage });
 
-      const { data } = await axios.get(
-        url,
-        {
-          withCredentials: true,
-        }
-      );
+      const url = `${
+        process.env.REACT_APP_API_URL
+      }/Get-Permissions?${params.toString()}`;
+
+      const { data } = await axios.get(url, {
+        withCredentials: true,
+      });
       setPremisionsarr(data);
     } catch (error) {}
   };
@@ -130,15 +130,15 @@ export default function Permissions() {
   const CustomerService = async (page = 1) => {
     setLoading(true);
     try {
-      const safePage = Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
-      const params = new URLSearchParams({ page: safePage});
-      const url = `${process.env.REACT_APP_API_URL}/Get-All-Peaple-Admin?${params.toString()}`;
-      const { data } = await axios.get(
-        url,
-        {
-          withCredentials: true,
-        }
-      );
+      const safePage =
+        Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+      const params = new URLSearchParams({ page: safePage });
+      const url = `${
+        process.env.REACT_APP_API_URL
+      }/Get-All-Peaple-Admin?${params.toString()}`;
+      const { data } = await axios.get(url, {
+        withCredentials: true,
+      });
 
       setUsers(data.data || data);
       setTotalPages(data.totalPages || 1);
