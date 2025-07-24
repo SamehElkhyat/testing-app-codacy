@@ -53,13 +53,11 @@ export default function Permissions() {
   const Premissions = async (page = 1) => {
     try {
       const safePage =
-        Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+        Number.isInteger(page) && Number(page) > 0 ? Number(page) : 1;
 
       const params = new URLSearchParams({ page: safePage });
 
-      const url = `${
-        process.env.REACT_APP_API_URL
-      }/Get-Permissions?${params.toString()}`;
+      const url = `${process.env.REACT_APP_API_URL}/Get-Permissions?${params.toString()}`;
 
       const { data } = await axios.get(url, {
         withCredentials: true,
@@ -142,6 +140,7 @@ export default function Permissions() {
         withCredentials: true,
       });
 
+
       setUsers(data.data || data);
       setTotalPages(data.totalPages || 1);
       setTotalUsers(data.totalUser || data.length);
@@ -158,14 +157,14 @@ export default function Permissions() {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    CustomerService(page, searchTerm);
+    CustomerService(page);
   };
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
     setCurrentPage(1);
-    CustomerService(1, value);
+    CustomerService(1);
   };
 
   // Generate page numbers for pagination
