@@ -62,8 +62,10 @@ export default function Brookers() {
   const CustomerService = async (page = 1, search = "") => {
     setLoading(true);
     try {
+      const safePage = Number.isInteger(Number(page)) ? page : 1;
+
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Get-Broker/${page}`,
+        `${process.env.REACT_APP_API_URL}/Get-Broker/${safePage}`,
         {
           withCredentials: true,
         }
