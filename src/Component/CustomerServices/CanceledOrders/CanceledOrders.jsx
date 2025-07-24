@@ -72,7 +72,7 @@ export default function CanceledOrders() {
         `${process.env.REACT_APP_API_URL_MICROSERVICE2}/Change-Statu-CustomerService-Broker`,
         {
           ID: id,
-          Notes: notes[id] || "", // إرسال الملاحظات إن وجدت
+          Notes: notes.get(id) || "",
           statuOrder: "delete",
         },
         {
@@ -92,7 +92,7 @@ export default function CanceledOrders() {
         `${process.env.REACT_APP_API_URL_MICROSERVICE2}/Change-Statu-CustomerService-Broker`,
         {
           ID: id,
-          Notes: notes[id] || "", // إرسال الملاحظات إن وجدت
+          Notes: notes.get(id) || "",
           statuOrder: "send",
         },
         {
@@ -354,7 +354,7 @@ export default function CanceledOrders() {
                             label="اكتب ملاحظة"
                             variant="outlined"
                             fullWidth
-                            value={notes[customer.id] || ""}
+                            value={notes.get(customer.id) || ""}
                             onChange={(e) =>
                               handleNoteChange(customer.id, e.target.value)
                             }
@@ -375,7 +375,7 @@ export default function CanceledOrders() {
                             label="اكتب ملاحظة"
                             variant="outlined"
                             fullWidth
-                            value={notes[customer.id] || ""}
+                            value={notes.get(customer.id) || ""}
                             onChange={(e) =>
                               handleNoteChange(customer.id, e.target.value)
                             }
@@ -396,7 +396,7 @@ export default function CanceledOrders() {
                             label="اكتب ملاحظة"
                             variant="outlined"
                             fullWidth
-                            value={notes[customer.id] || ""}
+                            value={notes.get(customer.id) || ""}
                             onChange={(e) =>
                               handleNoteChange(customer.id, e.target.value)
                             }
