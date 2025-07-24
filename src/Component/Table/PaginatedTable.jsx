@@ -16,13 +16,15 @@ export const usePagination = (apiEndpoint, initialPage = 1) => {
     try {
       // Construct URL with page as path parameter instead of query parameter
       const baseUrl = apiEndpoint.endsWith('/') ? apiEndpoint.slice(0, -1) : apiEndpoint;
-      const pageUrl = `${baseUrl}/${page}`;
+      const safePage = Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+      const params = new URLSearchParams({ page: safePage});
+      const pageUrl = `${baseUrl}?${params.toString()}`;
       
       // Add additional parameters as query params if any
       let finalUrl = pageUrl;
       if (Object.keys(additionalParams).length > 0) {
         const queryParams = new URLSearchParams(additionalParams);
-        finalUrl = `${pageUrl}?${queryParams}`;
+        finalUrl = `${pageUrl}?${queryParams.toString()}`;
       }
       
       const response = await fetch(finalUrl, {
