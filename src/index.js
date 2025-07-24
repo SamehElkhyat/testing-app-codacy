@@ -59,7 +59,6 @@ import LandingPageManger from "./Component/MangerComponennt/LandingPageManger/La
 import BlacklistManger from "./Component/MangerComponennt/blacklistManger/blacklistManger.jsx";
 import StatisticsManger from "./Component/MangerComponennt/statisticsManger/statisticsManger.jsx";
 import DetailsForAdmin from "./Component/MangerComponennt/DetailsForAdmin/DetailsForAdmin.jsx";
-import CustomTable from "./Component/Table/Tables.jsx";
 import LogsOrders from "./Component/MangerComponennt/LogsOrders/LogsOrders.jsx";
 import Tracking from "./Component/ClientsComponent/Tracking/Tracking.jsx";
 import UserPayment from "./Component/ClientsComponent/UserPayment/UserPayment.jsx";
@@ -96,7 +95,6 @@ const router = createBrowserRouter([
       { path: "LandingPageManger", element: <LandingPageManger /> },
       { path: "Testing", element: <Testing /> },
       { path: "StatisticsManger", element: <StatisticsManger /> },
-      { path: "Tables", element: <CustomTable /> },
       { path: "LogsOrders", element: <LogsOrders /> },
       // make Account//
       { path: "SignIn", element: <SignIn /> },

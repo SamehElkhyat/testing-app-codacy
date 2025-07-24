@@ -63,8 +63,7 @@ export default function Permissions() {
         withCredentials: true,
       });
 
-      setSelectedOrder(data.data || data);
-      setPremisionsarr(data);
+      setPremisionsarr(data.data || data);
     } catch (error) {}
   };
 
