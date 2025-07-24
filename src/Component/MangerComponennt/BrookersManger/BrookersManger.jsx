@@ -266,7 +266,6 @@ export default function BrookersManger() {
               borderBottom: "1px solid #e0e0e0",
               borderLeft: "1px solid #e0e0e0",
               borderRight: "1px solid #e0e0e0",
-              borderRight: "1px solid #e0e0e0",
               boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
             }}
           >

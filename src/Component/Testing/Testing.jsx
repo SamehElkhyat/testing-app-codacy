@@ -20,7 +20,8 @@ function Testing() {
   // تشغيل الاتصال واستقبال الإشعارات
   useEffect(() => {
     if (connection) {
-      connection.start()
+      connection
+        .start()
         .then(() => {
           console.log("✅ Connected to SignalR");
           // استقبال الإشعارات
@@ -32,11 +33,10 @@ function Testing() {
     }
   }, [connection]);
 
-  
   const sendNotification = async () => {
     try {
       await axios.post(`https://user.runasp.net/api/send?num=${num}`);
-      setNum(""); 
+      setNum("");
     } catch (error) {
       console.error("❌ API Error:", error);
     }
@@ -70,4 +70,4 @@ function Testing() {
   );
 }
 
-export default Testing;
+export default Testing;
