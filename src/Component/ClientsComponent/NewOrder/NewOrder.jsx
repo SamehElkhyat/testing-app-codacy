@@ -489,12 +489,15 @@ const NewOrderForm = () => {
                 </Form.Control>
               </Form.Group>
 
-              {formik.touched.numberOfTypeOrders?.[index]?.typeOrder &&
-                formik.errors.numberOfTypeOrders?.[index]?.typeOrder && (
-                  <div className="text-danger text-sm">
-                    {formik.errors.numberOfTypeOrders[index].typeOrder}
-                  </div>
-                )}
+              {formik.errors.numberOfTypeOrders ? (
+                <>
+                  {formik.errors.numberOfTypeOrders.map((order, index) => (
+                    <div className="text-danger text-sm">{order.typeOrder}</div>
+                  ))}
+                </>
+              ) : (
+                <></>
+              )}
 
               <Form.Group controlId={`numberOfTypeOrders[${index}][Number]`}>
                 <Form.Label className="text-sm sm:text-base">عدد</Form.Label>
@@ -537,17 +540,24 @@ const NewOrderForm = () => {
                         ...formik.values.numberOfTypeOrders,
                       ];
 
-                      updatedOrders[index].Weight = e.target.value;
+                      updatedOrders.map((order, index) => {
+                        if (index === 0) {
+                          order.Weight = e.target.value;
+                        }
+                      });
                       formik.setFieldValue("numberOfTypeOrders", updatedOrders);
                     }}
                     className="text-sm sm:text-base"
                   />
-                  {formik.touched.numberOfTypeOrders?.[index]?.Weight &&
-                    formik.errors.numberOfTypeOrders?.[index]?.Weight && (
-                      <div className="text-danger text-sm">
-                        {formik.errors.numberOfTypeOrders[index].Weight}
-                      </div>
-                    )}
+                  {formik.errors.numberOfTypeOrders ? (
+                    <>
+                      {formik.errors.numberOfTypeOrders.map((order, index) => (
+                        <div className="text-danger text-sm">{order.Weight}</div>
+                      ))}
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </Form.Group>
               )}
 
@@ -577,11 +587,14 @@ const NewOrderForm = () => {
                     <option value="20">20</option>
                     <option value="40">40</option>
                   </Form.Control>
-                  {formik.touched.numberOfTypeOrders.map(
-                    (order, index) =>
-                      order.Size && (
+                  {formik.errors.numberOfTypeOrders ? (
+                    <>
+                      {formik.errors.numberOfTypeOrders.map((order, index) => (
                         <div className="text-danger text-sm">{order.Size}</div>
-                      )
+                      ))}
+                    </>
+                  ) : (
+                    <></>
                   )}
                 </Form.Group>
               )}
