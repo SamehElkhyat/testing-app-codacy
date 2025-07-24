@@ -136,7 +136,14 @@ export default function CanceledOrders() {
   };
 
   const handleNoteChange = (id, value) => {
-    setNotes((prevNotes) => ({ ...prevNotes, [id]: value }));
+    // Validate the value to prevent prototype pollution
+    if (typeof value !== 'string') {
+      console.warn('Invalid note value type');
+      return;
+    }
+    // Sanitize the value to remove potentially harmful content
+    const sanitizedValue = value.replace(/[<>]/g, '');
+    setNotes((prevNotes) => ({ ...prevNotes, [id]: sanitizedValue }));
   };
   const toggleNoteField = (id) => {
     setShowNoteField((prev) => ({ ...prev, [id]: !prev[id] }));
