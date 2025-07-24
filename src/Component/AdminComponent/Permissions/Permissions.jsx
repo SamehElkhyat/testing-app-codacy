@@ -127,11 +127,14 @@ export default function Permissions() {
     }
   };
 
-  const CustomerService = async (page = 1, search = "") => {
+  const CustomerService = async (page = 1) => {
     setLoading(true);
     try {
+      const safePage = Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+      const params = new URLSearchParams({ page: safePage});
+      const url = `${process.env.REACT_APP_API_URL}/Get-All-Peaple-Admin?${params.toString()}`;
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Get-All-Peaple-Admin/${page}`,
+        url,
         {
           withCredentials: true,
         }
