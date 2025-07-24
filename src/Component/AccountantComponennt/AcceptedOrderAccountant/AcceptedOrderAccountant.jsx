@@ -9,8 +9,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 export default function AcceptedOrderAccountant() {
   const [customers, setCustomers] = useState([]);
   const [sortOrder, setSortOrder] = useState("newest");
-  const [notes, setNotes] = useState({});
-  const [showNoteField, setShowNoteField] = useState({});
+  const [notes, setNotes] = useState(new Map());
+  const [showNoteField, setShowNoteField] = useState(new Map());
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [order, setorder] = useState({});
   const [Bar, setBar] = useState(null);
@@ -97,12 +97,20 @@ export default function AcceptedOrderAccountant() {
 
   // تحديث حالة الملاحظات عند إدخالها
   const handleNoteChange = (id, value) => {
-    setNotes((prevNotes) => ({ ...prevNotes, [id]: value }));
+    setNotes((prevNotes) => {
+      const newNotes = new Map(prevNotes);
+      newNotes.set(id, value);
+      return newNotes;
+    });
   };
 
   // تحديث حالة الإظهار عند الضغط على الزر
   const toggleNoteField = (id) => {
-    setShowNoteField((prev) => ({ ...prev, [id]: !prev[id] }));
+    setShowNoteField((prev) => {
+      const newShowNoteField = new Map(prev);
+      newShowNoteField.set(id, !newShowNoteField.get(id));
+      return newShowNoteField;
+    });
   };
 
   // دالة تغيير الحالة وإرسال الملاحظات
@@ -113,7 +121,7 @@ export default function AcceptedOrderAccountant() {
         {
           statuOrder: "false",
           ID: id,
-          Notes: notes[id] || "", // إرسال الملاحظات إن وجدت
+          Notes: notes.get(id) || "", // إرسال الملاحظات إن وجدت
         },
         {
           withCredentials: true,
@@ -379,7 +387,7 @@ export default function AcceptedOrderAccountant() {
                               variant="outlined"
                               fullWidth
                               size="small"
-                              value={notes[customer.id] || ""}
+                              value={notes.get(customer.id) || ""}
                               onChange={(e) =>
                                 handleNoteChange(customer.id, e.target.value)
                               }
