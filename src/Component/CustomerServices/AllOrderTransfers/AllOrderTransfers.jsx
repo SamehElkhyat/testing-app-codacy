@@ -10,8 +10,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 export default function AllOrderTransfers() {
   const [customers, setCustomers] = useState([]);
   const [sortOrder, setSortOrder] = useState("newest");
-  const [showNoteField, setShowNoteField] = useState({}); // حالة لإظهار حقل الإدخال عند الحاجة
-  const [notes, setNotes] = useState({}); // حالة لتخزين الملاحظات لكل طلب
+  const [showNoteField, setShowNoteField] = useState(new Map()); // حالة لإظهار حقل الإدخال عند الحاجة
+  const [notes, setNotes] = useState(new Map()); // حالة لتخزين الملاحظات لكل طلب
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [order, setorder] = useState({});
   const [Bar, setBar] = useState(null);
@@ -69,11 +69,19 @@ export default function AllOrderTransfers() {
   };
 
   const handleNoteChange = (id, value) => {
-    setNotes((prevNotes) => ({ ...prevNotes, [id]: value }));
+    setNotes((prevNotes) => {
+      const newNotes = new Map(prevNotes);
+      newNotes.set(id, value);
+      return newNotes;
+    });
   };
 
   const toggleNoteField = (id) => {
-    setShowNoteField((prev) => ({ ...prev, [id]: !prev[id] }));
+    setShowNoteField((prev) => {
+      const newShowNoteField = new Map(prev);
+      newShowNoteField.set(id, !newShowNoteField.get(id));
+      return newShowNoteField;
+    });
   };
 
   const ChangeStateNotDone = async (id) => {
@@ -84,7 +92,7 @@ export default function AllOrderTransfers() {
         {
           statuOrder: "false",
           ID: id,
-          Notes: notes[id] || "", // إرسال الملاحظات إن وجدت
+          Notes: notes.get(id) || "", // إرسال الملاحظات إن وجدت
         },
         {
           withCredentials: true,
@@ -406,7 +414,7 @@ export default function AllOrderTransfers() {
                           label="اكتب ملاحظة"
                           variant="outlined"
                           fullWidth
-                          value={notes[customer.id] || ""}
+                          value={notes.get(customer.id) || ""}
                           onChange={(e) =>
                             handleNoteChange(customer.id, e.target.value)
                           }
