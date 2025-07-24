@@ -6,8 +6,10 @@ import { toast } from "react-toastify";
 import ships from "../ships.png";
 import { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom"; 
 
 const ConfirmPassword = () => {
+  const navigate = useNavigate();
   const SendCode = async (values) => {
     try {
       const response = await axios.post(

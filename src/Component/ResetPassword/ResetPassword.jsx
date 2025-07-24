@@ -5,8 +5,10 @@ import axios from "axios";
 import "./ResetPassword.css";
 import ships from "./ships.png";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const validationSchema = Yup.object({

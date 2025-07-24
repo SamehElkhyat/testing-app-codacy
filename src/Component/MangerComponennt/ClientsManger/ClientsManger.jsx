@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { Button, Card, Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function ClientsManger() {
@@ -14,7 +14,7 @@ export default function ClientsManger() {
   const [totalClients, setTotalClients] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const navigate = useNavigate();
   const styles = {
     cards1: {
       color: "black",

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-
+import { motion } from "framer-motion";
 function ContactForm() {
   const formik = useFormik({
     initialValues: {

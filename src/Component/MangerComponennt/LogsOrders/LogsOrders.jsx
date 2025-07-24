@@ -44,7 +44,7 @@ function LogsOrders() {
   const HistoryOrders = async () => {
     try {
       const { data } = await axios.post(
-        `${REACT_APP_API_URL_MICROSERVICE3}/Logs`,
+        `${process.env.REACT_APP_API_URL_MICROSERVICE3}/Logs`,
         { withCredentials: true }
       );
     } catch (error) {}
