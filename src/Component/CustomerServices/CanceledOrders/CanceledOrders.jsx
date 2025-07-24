@@ -11,7 +11,7 @@ export default function CanceledOrders() {
   const [showNoteField3, setShowNoteField3] = useState({}); // حالة لإظهار حقل الإدخال عند الحاجة
   const [customers, setCustomers] = useState([]);
   const [sortOrder, setSortOrder] = useState("newest");
-  const [notes, setNotes] = useState({});
+  const [notes, setNotes] = useState(new Map());
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [order, setorder] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -135,21 +135,15 @@ export default function CanceledOrders() {
     }
   };
 
-  const handleNoteChange = (id, value) => {
-    // Validate and sanitize the input to prevent object injection
-    if (typeof id !== 'string' || typeof value !== 'string') {
-      return;
-    }
-    // Sanitize the value to remove potentially harmful content
-    const sanitizedValue = value.replace(/[<>]/g, '');
-    setNotes((prevNotes) => ({ ...prevNotes, [id]: sanitizedValue }));
-  };
+  const handleNoteChange = (id, value) => {    
+    
+    setNotes((prevNotes) => {
+      const newNotes = new Map(prevNotes);
+      newNotes.set(id, value);
+      return newNotes;
+    });  };
   const toggleNoteField = (id) => {
-    if (typeof id !== 'string' || typeof value !== 'string') {
-      return;
-    }
-    const sanitizedId = id.replace(/[<>]/g, '');
-    setShowNoteField((prev) => ({ ...prev, [sanitizedId]: !prev[sanitizedId] }));
+    setShowNoteField((prev) => ({ ...prev, [id]: !prev[id] }));
   };
   const toggleNoteField2 = (id) => {
     setShowNoteField2((prev) => ({ ...prev, [id]: !prev[id] }));
