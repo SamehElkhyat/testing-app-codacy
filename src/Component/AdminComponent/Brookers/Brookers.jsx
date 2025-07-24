@@ -63,7 +63,6 @@ export default function Brookers() {
     try {
       // تأمين القيم المدخلة
       const safePage = Number.isInteger(page) && page > 0 ? page : 1;
-  
       // إنشاء رابط آمن باستخدام query parameters
       const params = new URLSearchParams({ page: safePage});
       const url = `${process.env.REACT_APP_API_URL}/Get-Broker?${params.toString()}`;

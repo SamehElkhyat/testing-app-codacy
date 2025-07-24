@@ -15,11 +15,15 @@ export default function ExpiredOrders() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const CustomerService = async (page = 1, search = "") => {
+  const CustomerService = async (page = 1) => {
     setLoading(true);
     try {
+      const safePage = Number.isInteger(Number(page)) &&Number(page) > 0 ? Number(page) : 1;
+      
+      const params = new URLSearchParams({ page: safePage});
+
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL_MICROSERVICE2}/Orders-Expired-Date?page=${page}&search=${search}`,
+        `${process.env.REACT_APP_API_URL_MICROSERVICE2}/Orders-Expired-Date?${params.toString()}`,
         {
           withCredentials: true,
         }
