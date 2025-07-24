@@ -146,10 +146,22 @@ export default function CanceledOrders() {
     setNotes((prevNotes) => ({ ...prevNotes, [id]: sanitizedValue }));
   };
   const toggleNoteField = (id) => {
-    setShowNoteField((prev) => ({ ...prev, [id]: !prev[id] }));
+    // Validate the id to prevent prototype pollution
+    if (typeof id !== 'string') {
+      console.warn('Invalid id type');
+      return;
+    }
+    // Sanitize the id to remove potentially harmful content
+    const sanitizedId = id.replace(/[<>]/g, '');
+    setShowNoteField((prev) => ({ ...prev, [sanitizedId]: !prev[sanitizedId] }));
   };
   const toggleNoteField2 = (id) => {
-    setShowNoteField2((prev) => ({ ...prev, [id]: !prev[id] }));
+    if (typeof id !== 'string') {
+      console.warn('Invalid id type');
+      return;
+    }
+    const sanitizedId = id.replace(/[<>]/g, '');
+    setShowNoteField2((prev) => ({ ...prev, [sanitizedId]: !prev[sanitizedId] }));
   };
 
   // Handle page change
