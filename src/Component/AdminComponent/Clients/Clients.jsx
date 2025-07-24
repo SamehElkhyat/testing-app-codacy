@@ -51,17 +51,21 @@ export default function Clients() {
   const CustomerService = async (page = 1) => {
     setLoading(true);
     try {
+      const safePage = Number.isInteger(Number(page)) ? page : 1;
+      if (!process.env.REACT_APP_API_URL) {
+        throw new Error('API URL not configured');
+      }
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Get-User/${page}`,
+        `${process.env.REACT_APP_API_URL}/Get-User/${safePage}`,
         {
           withCredentials: true,
         }
       );
-      console.log(data);
       setSelectedOrder(data.data);
       setTotalPages(data.totalPages || 1);
       setTotalUsers(data.totalUser || 0);
     } catch (error) {
+      console.error('Error fetching client data:', error);
     } finally {
       setLoading(false);
     }
