@@ -24,7 +24,6 @@ export default function Brookers() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(false);
 
-
   const Block = async (email) => {
     try {
       const { data } = await axios.post(
@@ -37,9 +36,7 @@ export default function Brookers() {
         }
       );
       CustomerService();
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const UnBlock = async (email) => {
@@ -54,35 +51,30 @@ export default function Brookers() {
         }
       );
       CustomerService();
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
-
   const CustomerService = async (page = 1, search = "") => {
     setLoading(true);
-    try {
-      // Simple validation: ensure page is a positive integer between 1-10000
-      const pageNum = parseInt(page, 10);
-      const safePage = (pageNum && pageNum > 0 && pageNum <= 10000) ? pageNum : 1;
-      
-      // Validate base URL exists
-      if (!process.env.REACT_APP_API_URL) {
-        throw new Error('API URL not configured');
-      }
-      
-      // Construct URL safely using template literals with validated parameters
-      const apiUrl = `${process.env.REACT_APP_API_URL}/Get-Broker/${safePage}`;
 
-      const { data } = await axios.get(apiUrl, {
-        withCredentials: true,
-      });
+    // تأمين المتغيرات
+    const safePage =
+      Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+    const safeSearch = encodeURIComponent(search); // مش مستخدم حالياً لكن مجهز
+
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/Get-Broker/${safePage}`,
+        {
+          withCredentials: true,
+        }
+      );
+
       setSelectedOrder(data.data || data);
       setTotalPages(data.totalPages || 1);
       setTotalUsers(data.totalUser || data.length);
-      setCurrentPage(page);
+      setCurrentPage(safePage);
     } catch (error) {
-      console.error('Error fetching broker data:', error);
+      console.error("Failed to fetch brokers:", error);
     } finally {
       setLoading(false);
     }
@@ -101,7 +93,7 @@ export default function Brookers() {
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
-    
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -111,25 +103,25 @@ export default function Brookers() {
         for (let i = 1; i <= 4; i++) {
           pages.push(i);
         }
-        pages.push('...');
+        pages.push("...");
         pages.push(totalPages);
       } else if (currentPage >= totalPages - 2) {
         pages.push(1);
-        pages.push('...');
+        pages.push("...");
         for (let i = totalPages - 3; i <= totalPages; i++) {
           pages.push(i);
         }
       } else {
         pages.push(1);
-        pages.push('...');
+        pages.push("...");
         for (let i = currentPage - 1; i <= currentPage + 1; i++) {
           pages.push(i);
         }
-        pages.push('...');
+        pages.push("...");
         pages.push(totalPages);
       }
     }
-    
+
     return pages;
   };
 
@@ -178,15 +170,9 @@ export default function Brookers() {
                 className="text-white text-decoration-none"
                 to="/brookersLandingPage"
               >
-                <Card
- 
-                  className="shadow-lg"
-                >
+                <Card className="shadow-lg">
                   <Card.Body>
-                    <i
-                      className="fa-solid fa-tty text-success"
-                 
-                    ></i>
+                    <i className="fa-solid fa-tty text-success"></i>
                     <div className="content">
                       <p>قم باداره خدمه العملاء</p>
                     </div>
@@ -202,13 +188,16 @@ export default function Brookers() {
               </Link>
             </Col>
           </div>
-          
+
           {/* Responsive container for buttons and search */}
           <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4 mb-6">
             {/* Buttons container */}
             <div className="w-full lg:w-auto flex flex-col sm:flex-row items-center justify-center gap-2">
               <button className="flex items-center justify-center gap-2 bg-[#00AEEF] text-white text-base sm:text-lg font-medium px-4 sm:px-6 py-2 sm:py-3 rounded-[15px] w-full sm:w-[141px] h-[45px] sm:h-[55px]">
-                <Share2 size={20} className="transform scale-x-[-1] sm:w-6 sm:h-6" />
+                <Share2
+                  size={20}
+                  className="transform scale-x-[-1] sm:w-6 sm:h-6"
+                />
                 <span className="hidden sm:inline">مشاركة</span>
               </button>
               <button className="flex items-center justify-center gap-2 bg-[transparent] text-black border border-[var(--maincolor--)] text-base sm:text-lg font-medium px-4 sm:px-6 py-2 sm:py-3 rounded-[15px] w-full sm:w-[141px] h-[45px] sm:h-[55px]">
@@ -218,7 +207,10 @@ export default function Brookers() {
             </div>
 
             {/* Search container */}
-            <div className="w-full lg:w-auto flex items-center justify-center" dir="rtl">
+            <div
+              className="w-full lg:w-auto flex items-center justify-center"
+              dir="rtl"
+            >
               <div className="w-full max-w-2xl p-2 sm:p-4">
                 <div className="border border-2 border-blue flex items-center justify-between rounded-2xl px-3 sm:px-4 py-2 bg-white shadow-sm focus-within:ring-2 focus-within:ring-blue-400">
                   <input
@@ -229,7 +221,9 @@ export default function Brookers() {
                     className="flex-1 text-right bg-transparent outline-none text-black placeholder:text-gray-400 text-sm sm:text-base"
                   />
                   <div className="flex items-center gap-1 sm:gap-2 text-black">
-                    <span className="text-sm sm:text-lg font-medium hidden sm:inline">بحث</span>
+                    <span className="text-sm sm:text-lg font-medium hidden sm:inline">
+                      بحث
+                    </span>
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"
@@ -252,7 +246,8 @@ export default function Brookers() {
           {/* Users count info */}
           <div className="mb-4 text-center">
             <p className="text-white text-sm sm:text-base">
-              إجمالي المخلصين: <span className="font-bold text-blue-300">{totalUsers}</span>
+              إجمالي المخلصين:{" "}
+              <span className="font-bold text-blue-300">{totalUsers}</span>
             </p>
           </div>
 
@@ -262,18 +257,24 @@ export default function Brookers() {
               <Table className="table table-bordered w-full">
                 <TableHead className="bg-white shadow-sm">
                   <TableRow>
-                    <TableCell className="text-center fw-bold text-xs sm:text-sm md:text-base">الاسم</TableCell>
+                    <TableCell className="text-center fw-bold text-xs sm:text-sm md:text-base">
+                      الاسم
+                    </TableCell>
                     <TableCell className="text-center fw-bold text-xs sm:text-sm md:text-base">
                       البريد الإلكتروني
                     </TableCell>
                     <TableCell className="text-center fw-bold text-xs sm:text-sm md:text-base">
                       رقم الهوية
                     </TableCell>
-                    <TableCell className="text-center fw-bold text-xs sm:text-sm md:text-base">الهاتف</TableCell>
+                    <TableCell className="text-center fw-bold text-xs sm:text-sm md:text-base">
+                      الهاتف
+                    </TableCell>
                     <TableCell className="text-center fw-bold text-xs sm:text-sm md:text-base">
                       الملف الشخصي
                     </TableCell>
-                    <TableCell className="text-center fw-bold text-xs sm:text-sm md:text-base">الإجراء</TableCell>
+                    <TableCell className="text-center fw-bold text-xs sm:text-sm md:text-base">
+                      الإجراء
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -288,7 +289,10 @@ export default function Brookers() {
                     </TableRow>
                   ) : selectedOrder.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan="6" className="text-center py-4 text-gray-500">
+                      <TableCell
+                        colSpan="6"
+                        className="text-center py-4 text-gray-500"
+                      >
                         لا توجد بيانات للعرض
                       </TableCell>
                     </TableRow>
@@ -309,7 +313,9 @@ export default function Brookers() {
                         </TableCell>
                         <TableCell className="text-center align-middle">
                           <Button
-                            onClick={() => navigate(`/ProfileUsers/${customer.id}`)}
+                            onClick={() =>
+                              navigate(`/ProfileUsers/${customer.id}`)
+                            }
                             className="btn btn-primary text-white text-xs sm:text-sm md:text-base"
                           >
                             عرض الملف الشخصي
@@ -350,8 +356,8 @@ export default function Brookers() {
                   disabled={currentPage === 1}
                   className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 ${
                     currentPage === 1
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-blue-500 text-white hover:bg-blue-600 hover:scale-105'
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-blue-500 text-white hover:bg-blue-600 hover:scale-105"
                   }`}
                 >
                   <ChevronRight size={20} />
@@ -362,14 +368,16 @@ export default function Brookers() {
                   {getPageNumbers().map((page, index) => (
                     <button
                       key={index}
-                      onClick={() => typeof page === 'number' && handlePageChange(page)}
-                      disabled={page === '...'}
+                      onClick={() =>
+                        typeof page === "number" && handlePageChange(page)
+                      }
+                      disabled={page === "..."}
                       className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 text-sm font-medium ${
-                        page === '...'
-                          ? 'text-gray-400 cursor-default'
+                        page === "..."
+                          ? "text-gray-400 cursor-default"
                           : page === currentPage
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
                       }`}
                     >
                       {page}
@@ -383,8 +391,8 @@ export default function Brookers() {
                   disabled={currentPage === totalPages}
                   className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 ${
                     currentPage === totalPages
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-blue-500 text-white hover:bg-blue-600 hover:scale-105'
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-blue-500 text-white hover:bg-blue-600 hover:scale-105"
                   }`}
                 >
                   <ChevronLeft size={20} />
