@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import toast, { Toaster } from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -14,6 +14,7 @@ export default function OrderDetailsForUser() {
   const [totalOffers, setTotalOffers] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   let params = useParams();
 
   const FilesName = {
@@ -83,7 +84,7 @@ export default function OrderDetailsForUser() {
       if (data.status == 200) {
         toast.success("تم قبول الطلب بنجاح");
         setTimeout(() => {
-          window.location.href = "/CurrentOrdersForUsers";
+          navigate("/CurrentOrdersForUsers");
         }, 1000);
       }
     } catch (error) {}

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Button, Box, TextField } from "@mui/material";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
-import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -130,7 +129,7 @@ export default function CanceledOrders() {
         setTotalOrders(data.length);
       }
     } catch (error) {
-      console.log(error);
+
     } finally {
       setLoading(false);
     }
@@ -139,7 +138,6 @@ export default function CanceledOrders() {
   const handleNoteChange = (id, value) => {
     setNotes((prevNotes) => ({ ...prevNotes, [id]: value }));
   };
-
   const toggleNoteField = (id) => {
     setShowNoteField((prev) => ({ ...prev, [id]: !prev[id] }));
   };

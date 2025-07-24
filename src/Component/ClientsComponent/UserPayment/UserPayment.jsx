@@ -13,7 +13,9 @@ import { useFormik } from "formik";
 import { Form } from "react-bootstrap";
 import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 export default function UserPayment() {
+  const navigate = useNavigate();
   const SendAmount = async (amount) => {
     try {
       const { data } = await axios.post(
@@ -24,7 +26,7 @@ export default function UserPayment() {
         }
       );
       toast.success("تم الدفع بنجاح");
-      window.location.href = data.approveUrl;
+      navigate(data.approveUrl);
     } catch (error) {
       toast.error("فشلت العمليه");
     }

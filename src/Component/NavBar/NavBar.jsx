@@ -23,7 +23,7 @@ const NavBar = () => {
     setOpen(newOpen);
   };
   let { pathname } = useLocation();
-
+  const navigate = useNavigate();
   const [userLink, setUserLink] = useState(null);
 
   const navigationToLandingpage = async () => {
@@ -204,14 +204,14 @@ const NavBar = () => {
               <>
                 <div className="w-100 flex flex-row justify-start lg2:block hidden">
                   <button
-                    onClick={() => (window.location.href = "/IntorSignUp")}
+                    onClick={() => (navigate("/IntorSignUp"))}
                     className="lg2:text-[red] me-5 bg-[#1DA9E3] p-[10px] px-4 py-2 text-white rounded-[20px] shadow"
                   >
                     إنشاء الحساب
                   </button>
 
                   <button
-                    onClick={() => (window.location.href = "/SignIn")}
+                    onClick={() => (navigate("/SignIn"))}
                     className="me-5 text-[black] p-[10px] px-4 py-2  rounded-[20px] shadow"
                   >
                     تسجيل الدخول
