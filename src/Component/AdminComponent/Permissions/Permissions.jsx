@@ -62,7 +62,6 @@ export default function Permissions() {
       const { data } = await axios.get(url, {
         withCredentials: true,
       });
-
       setPremisionsarr(data.data || data);
     } catch (error) {}
   };
