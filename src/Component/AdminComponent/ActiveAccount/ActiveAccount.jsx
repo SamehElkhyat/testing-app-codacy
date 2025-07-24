@@ -28,9 +28,7 @@ export default function ActiveAccount() {
         }
       );
       CustomerService();
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const UnBlock = async (email) => {
@@ -45,16 +43,22 @@ export default function ActiveAccount() {
         }
       );
       CustomerService();
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
-  const CustomerService = async (page = 1, search = "") => {
+  const CustomerService = async (page = 1) => {
     setLoading(true);
     try {
+      const safePage =
+        Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+      const params = new URLSearchParams({ page: safePage });
+      const url = `${
+        process.env.REACT_APP_API_URL
+      }/Get-Manager?${params.toString()}`;
+
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Get-Manager/${page}`,
+        url,
+
         {
           withCredentials: true,
         }
@@ -65,7 +69,6 @@ export default function ActiveAccount() {
       setTotalUsers(data.totalUser || data.length);
       setCurrentPage(page);
     } catch (error) {
-      
     } finally {
       setLoading(false);
     }
@@ -84,7 +87,7 @@ export default function ActiveAccount() {
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
-    
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -94,29 +97,27 @@ export default function ActiveAccount() {
         for (let i = 1; i <= 4; i++) {
           pages.push(i);
         }
-        pages.push('...');
+        pages.push("...");
         pages.push(totalPages);
       } else if (currentPage >= totalPages - 2) {
         pages.push(1);
-        pages.push('...');
+        pages.push("...");
         for (let i = totalPages - 3; i <= totalPages; i++) {
           pages.push(i);
         }
       } else {
         pages.push(1);
-        pages.push('...');
+        pages.push("...");
         for (let i = currentPage - 1; i <= currentPage + 1; i++) {
           pages.push(i);
         }
-        pages.push('...');
+        pages.push("...");
         pages.push(totalPages);
       }
     }
-    
+
     return pages;
   };
-
-
 
   return (
     <>
@@ -201,7 +202,8 @@ export default function ActiveAccount() {
           {/* Users count info */}
           <div className="mb-4 text-center">
             <p className="text-white text-sm sm:text-base">
-              إجمالي العملاء: <span className="font-bold text-blue-300">{totalUsers}</span>
+              إجمالي العملاء:{" "}
+              <span className="font-bold text-blue-300">{totalUsers}</span>
             </p>
           </div>
 
@@ -279,8 +281,8 @@ export default function ActiveAccount() {
                   disabled={currentPage === 1}
                   className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 ${
                     currentPage === 1
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-blue-500 text-white hover:bg-blue-600 hover:scale-105'
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-blue-500 text-white hover:bg-blue-600 hover:scale-105"
                   }`}
                 >
                   <ChevronRight size={20} />
@@ -291,14 +293,16 @@ export default function ActiveAccount() {
                   {getPageNumbers().map((page, index) => (
                     <button
                       key={index}
-                      onClick={() => typeof page === 'number' && handlePageChange(page)}
-                      disabled={page === '...'}
+                      onClick={() =>
+                        typeof page === "number" && handlePageChange(page)
+                      }
+                      disabled={page === "..."}
                       className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 text-sm font-medium ${
-                        page === '...'
-                          ? 'text-gray-400 cursor-default'
+                        page === "..."
+                          ? "text-gray-400 cursor-default"
                           : page === currentPage
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
                       }`}
                     >
                       {page}
@@ -312,8 +316,8 @@ export default function ActiveAccount() {
                   disabled={currentPage === totalPages}
                   className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 ${
                     currentPage === totalPages
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-blue-500 text-white hover:bg-blue-600 hover:scale-105'
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-blue-500 text-white hover:bg-blue-600 hover:scale-105"
                   }`}
                 >
                   <ChevronLeft size={20} />
