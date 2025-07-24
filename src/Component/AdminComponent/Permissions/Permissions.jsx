@@ -50,14 +50,16 @@ export default function Permissions() {
     Premissions(OrderId);
   };
 
-  const Premissions = async (page) => {
+  const Premissions = async (page = 1) => {
     try {
       const safePage = Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
       
       const params = new URLSearchParams({ page: safePage});
 
+      const url = `${process.env.REACT_APP_API_URL}/Get-Permissions?${params.toString()}`;
+
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Get-Permissions?${params.toString()}`,
+        url,
         {
           withCredentials: true,
         }
