@@ -136,9 +136,8 @@ export default function CanceledOrders() {
   };
 
   const handleNoteChange = (id, value) => {
-    // Validate the value to prevent prototype pollution
-    if (typeof value !== 'string') {
-      console.warn('Invalid note value type');
+    // Validate and sanitize the input to prevent object injection
+    if (typeof id !== 'string' || typeof value !== 'string') {
       return;
     }
     // Sanitize the value to remove potentially harmful content
@@ -146,22 +145,14 @@ export default function CanceledOrders() {
     setNotes((prevNotes) => ({ ...prevNotes, [id]: sanitizedValue }));
   };
   const toggleNoteField = (id) => {
-    // Validate the id to prevent prototype pollution
-    if (typeof id !== 'string') {
-      console.warn('Invalid id type');
+    if (typeof id !== 'string' || typeof value !== 'string') {
       return;
     }
-    // Sanitize the id to remove potentially harmful content
     const sanitizedId = id.replace(/[<>]/g, '');
     setShowNoteField((prev) => ({ ...prev, [sanitizedId]: !prev[sanitizedId] }));
   };
   const toggleNoteField2 = (id) => {
-    if (typeof id !== 'string') {
-      console.warn('Invalid id type');
-      return;
-    }
-    const sanitizedId = id.replace(/[<>]/g, '');
-    setShowNoteField2((prev) => ({ ...prev, [sanitizedId]: !prev[sanitizedId] }));
+    setShowNoteField2((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   // Handle page change
