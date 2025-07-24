@@ -58,36 +58,33 @@ export default function Brookers() {
       
     }
   };
-  const CustomerService = async (page = 1, search = "") => {
+  const CustomerService = async (page = 1) => {
     setLoading(true);
-  
     try {
-      // التحقق من أن page رقم صحيح موجب
-      const safePage = Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+      // تأمين القيم المدخلة
+      const safePage = Number.isInteger(page) && page > 0 ? page : 1;
   
-      // تشفير قيمة البحث (احتياطي لو استخدمتها لاحقًا)
-      const safeSearch = encodeURIComponent(search.trim());
+      // إنشاء رابط آمن باستخدام query parameters
+      const params = new URLSearchParams({ page: safePage});
+      const url = `${process.env.REACT_APP_API_URL}/Get-Broker?${params.toString()}`;
   
-      // تجهيز الرابط (لو قررت تستخدم search لاحقًا)
-      const url = `${process.env.REACT_APP_API_URL}/Get-Broker/${safePage}`;
-  
+      // الطلب
       const { data } = await axios.get(url, {
         withCredentials: true,
       });
   
-      // التعامل مع البيانات المستلمة
+      // التعامل مع البيانات
       setSelectedOrder(data.data || data);
       setTotalPages(data.totalPages || 1);
-      setTotalUsers(data.totalUser || data.length);
+      setTotalUsers(data.totalUser || (Array.isArray(data) ? data.length : 0));
       setCurrentPage(safePage);
-  
     } catch (error) {
-      console.error("❌ CustomerService request failed:", error);
+      console.error("Fetch failed:", error);
+      // ممكن تضيف toast أو alert هنا حسب المشروع
     } finally {
       setLoading(false);
     }
   };
-  
   
   useEffect(() => {
     CustomerService(currentPage);

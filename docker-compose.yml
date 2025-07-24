@@ -8,7 +8,7 @@ services:
     ports:
       - "3000:80"
     environment:
-      - REACT_APP_API_URL=https://firstproject.takhleesak.com/api
+      - REACT_APP_API_URL=http://firstproject.takhleesak.com/api
       - REACT_APP_API_URL_MICROSERVICE2=https://admin.takhleesak.com/api
       - REACT_APP_API_URL_MICROSERVICE3=https://customerservices.takhleesak.com/api
       - REACT_APP_API_URL_MICROSERVICE4=https://user.takhleesak.com/api
